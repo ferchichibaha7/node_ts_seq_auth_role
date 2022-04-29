@@ -1,6 +1,6 @@
 #### Endpoint
 ```http
-POST /api/auth/signup
+POST api/auth/signup
 ```
 #### Request
 ```javascript
@@ -19,7 +19,7 @@ POST /api/auth/signup
 -------------------------------
 #### Endpoint
 ```http
-POST /api/auth/login
+POST api/auth/login
 ```
 #### Request
 ```javascript
