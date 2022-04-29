@@ -12,7 +12,6 @@ const validateOptions =   [
   check( "password",  "Please enter a password with 8 or more characters" ).isLength({ min: 8 })
 ];
 
-router.post( "/create",validateOptions,(...params) => ctrl.create(...params));
 router.get( "/list",auth,(...params) => ctrl.findAllUsers(...params));
 router.delete( "/delete/:id",auth,admin,(...params) => ctrl.deleteUser(...params));
 router.get( "/:id",auth,admin,(...params) => ctrl.findOneUser(...params));

@@ -5,6 +5,7 @@ import HttpStatusCodes from "http-status-codes";
 import Payload from "../types/Payload";
 import _ from "underscore";
 import jwt from "jsonwebtoken";
+import { Role } from "../models/Role";
 
 export class authController {
   constructor() {}
@@ -13,8 +14,8 @@ export class authController {
     const [req, res, next] = params;
 
     try {
-      let user   = await User.findOne({ where:{ id : req['userId'] },attributes: {exclude: ['password']}});
-      res.json({ message: "User retrieved", result: user })
+      let user   = req.currentUser
+      res.json({ message: "User retrieved", result: user  })
     } catch (err) {
       res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send("Server Error");
     }
@@ -55,9 +56,13 @@ export class authController {
       await User.create({
         name: name,
         password: hashed,
+        role_id:2 // Normal User
       });
       res.json({ message: "User Registered" });
     } catch (err) {
+
+      console.log(err);
+      
       res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send("Server Error");
     }
   }
@@ -97,8 +102,7 @@ export class authController {
       }
 
       const payload: Payload = {
-        id: user['id'],
-        name: user['name']
+        id: user['id']
       };
 
       jwt.sign(
@@ -107,8 +111,7 @@ export class authController {
         { expiresIn: process.env.jwtExpiration },
         (err, token) => {
           if (err) throw err;
-          let toret = _.clone(payload);
-          toret['token'] = token;
+          let toret = {"token":token}
           res.json(toret);
         }
       );

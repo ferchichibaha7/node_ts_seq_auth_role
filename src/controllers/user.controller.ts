@@ -3,55 +3,11 @@ import bcrypt from "bcryptjs";
 import { validationResult } from "express-validator/check";
 import HttpStatusCodes from "http-status-codes";
 import { Op } from "sequelize";
-
+import Roles from "../constants/Roles"
 export class userController {
   constructor() {}
 
 
-
-  public async create(...params) {
-    const [req, res, next] = params;
-
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res
-        .status(HttpStatusCodes.BAD_REQUEST)
-        .json({ errors: errors.array() });
-    }
-
-    const {
-      name,
-      password
-    } = req.body;
-    try {
-     
-        let user = await User.findOne({ where: { name: name } });
-        if (user) {
-          return res.status(HttpStatusCodes.BAD_REQUEST).json({
-            errors: [
-              {
-                msg: "name already used",
-              },
-            ],
-          });
-     
-      }
-
-      const salt = await bcrypt.genSalt(10);
-      const hashed = await bcrypt.hash(password, salt);
-
-      await User.create({
-        name: name,
-       
-        password: hashed,
-     
-        isAdmin: false,
-      });
-      res.json({ message: "User Registered" });
-    } catch (err) {
-      res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send("Server Error");
-    }
-  }
   public updateUser = (...params) => {
     const [req, res, next] = params;
     const { id } = req.params;

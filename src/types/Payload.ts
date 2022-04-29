@@ -1,6 +1,5 @@
 type payload = {  
-    id:number,
-    name: string
+    id:number
    };
 
 export default payload;
