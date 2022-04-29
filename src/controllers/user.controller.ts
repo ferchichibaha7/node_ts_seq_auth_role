@@ -3,7 +3,6 @@ import bcrypt from "bcryptjs";
 import { validationResult } from "express-validator/check";
 import HttpStatusCodes from "http-status-codes";
 import { Op } from "sequelize";
-import Roles from "../constants/Roles"
 export class userController {
   constructor() {}
 
